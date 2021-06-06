@@ -1,9 +1,8 @@
-import { useNavigationBuilder } from '@react-navigation/core';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import styles from '../style/MainStyle';
 
 export default function Login({navigation}) {
 
@@ -11,15 +10,21 @@ export default function Login({navigation}) {
   const [password, setPassword] = useState(null)
 
 const entrar = () => {
+    // reset usado quando quer ir para uma tela sem ter o botão de voltar
     navigation.reset({
         index: 0,
         routes: [{name: "Principal"}]
     })
 }
 
+const cadastrar = () => {
+    // navega para a tela e conté o botão de voltar
+    navigation.navigate("Cadastro")
+}
+
   return (
     <View style={styles.container}>
-      <Text h3>Login</Text> 
+      <Text styles={styles.login}h3>Login</Text> 
       <Input
           placeholder="E-mail"
           leftIcon={{ type: 'font-awesome', name: 'envelope' }}
@@ -41,9 +46,10 @@ const entrar = () => {
             />
           }
           title="Entrar"
+          buttonStyle={specificStyle.button}
           onPress={() => entrar()}
         />
-        <Text h5 style={styles.other}>Quer ter benefícios?</Text>
+        <Text style={styles.other} h5>Quer ter benefícios?</Text>
         <Button
           icon={
             <Icon
@@ -53,22 +59,24 @@ const entrar = () => {
             />
           }
           title="Cadastre-se"
+          buttonStyle={specificStyle.button}
+          onPress={() => cadastrar()}
         />
     </View>
-
-   
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  other: {
-    marginVertical: 10, //margin é espaçamento externo
-    padding: 20, //padding é espaçamento interno
-  },
-});
+const specificStyle = StyleSheet.create({
+    specificContainer: {
+        backgroundColor: "#fff",
+    },
+    button: {
+      width: 150,
+      //marginTop: 10,
+      backgroundColor: "#FCE35D",
+      borderRadius: 20,
+    }
+    
+  })
+
+

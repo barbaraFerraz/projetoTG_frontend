@@ -7,7 +7,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 function Feed() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Feed!</Text>
+      <Text>Home!</Text>
     </View>
   );
 }
@@ -15,15 +15,31 @@ function Feed() {
 function Profile() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Profile!</Text>
+      <Text>Perfil!</Text>
     </View>
   );
 }
 
-function Notifications() {
+function Cupons() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Notifications!</Text>
+    </View>
+  );
+}
+
+function Pedidos() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Pedidos!</Text>
+    </View>
+  );
+}
+
+function Sacola() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Sacola!</Text>
     </View>
   );
 }
@@ -35,7 +51,7 @@ export default function Principal() {
     <Tab.Navigator
       initialRouteName="Feed"
       tabBarOptions={{
-        activeTintColor: '#e91e63',
+       activeTintColor: '#e91e63',
       }}
     >
       <Tab.Screen
@@ -49,12 +65,22 @@ export default function Principal() {
         }}
       />
       <Tab.Screen
-        name="Notifications"
-        component={Notifications}
+        name="Cupons"
+        component={Cupons}
         options={{
-          tabBarLabel: 'Updates',
+          tabBarLabel: 'Seus cupons',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="bell" color={color} size={size} />
+            <MaterialCommunityIcons name="ticket" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Pedidos"
+        component={Pedidos}
+        options={{
+          tabBarLabel: 'Pedidos',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="heart" color={color} size={size} />
           ),
         }}
       />
@@ -62,12 +88,24 @@ export default function Principal() {
         name="Profile"
         component={Profile}
         options={{
-          tabBarLabel: 'Profile',
+          tabBarLabel: 'Perfil',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
         }}
       />
+      <Tab.Screen
+        name="Sacola"
+        component={Sacola}
+        options={{
+          tabBarLabel: 'Sacola',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="shopping" color={color} size={size} />
+          ),
+        }}
+      />
+       
+      
     </Tab.Navigator>
   );
 }
