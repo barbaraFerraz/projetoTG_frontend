@@ -24,7 +24,7 @@ const cadastrar = () => {
 
   return (
     <View style={styles.container}>
-      <Text styles={styles.login}h3>Login</Text> 
+      <Text styles={styles.login}h4>Login</Text> 
       <Input
           placeholder="E-mail"
           leftIcon={{ type: 'font-awesome', name: 'envelope' }}

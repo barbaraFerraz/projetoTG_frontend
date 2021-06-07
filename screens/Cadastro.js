@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { Alert } from 'react-native';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, Input, CheckBox } from 'react-native-elements';
+import {Button as PaperButton, Provider, Dialog, Paragraph, Portal } from 'react-native-paper';
 //import { TextInputMask } from 'react-native-masked-text';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import usuarioService from '../services/UsuarioService';
 import styles from '../style/MainStyle';
 
 export default function Cadastro({navigation}) {
@@ -16,6 +19,15 @@ export default function Cadastro({navigation}) {
     const [errorEmail,setErrorEmail] = useState(null)
     const [errorSenha,setErrorSenha] = useState(null)
     const [errorTelefone,setErrorTelefone] = useState(null)
+    const [isLoading, setLoading] = useState(false)
+
+    const [visible, setVisible] = useState(false);
+    const showDialog = () => setVisible(true);
+    const hideDialog = () => setVisible(false);
+    const [titulo, setTitulo] = useState(null)
+    const [mensagem, setMensagem] = useState(null)
+    
+
     
     // let telefoneField = null
 
@@ -23,8 +35,10 @@ export default function Cadastro({navigation}) {
       let error = false
       setErrorEmail(null) //quando validar a mensagem de erro some
       setErrorSenha(null) //quando validar a mensagem de erro some
+      setErrorTelefone(null) //quando validar a mensagem o erro some
+      setErrorNome(null) //quando validar a mensagem o erro some 
 
-      // Expressão regular que verifica se o que foi digitado é realmente um email
+      // Regex que verifica se o que foi digitado é realmente um email
       const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (!re.test(String(email).toLowerCase())) { //se não validar a expressão regular acima
           setErrorEmail("Preencha seu email corretamente")
@@ -35,7 +49,11 @@ export default function Cadastro({navigation}) {
           error = true
         }
         if(telefone == null){
-          setErrorTelefone("Preencha seu telefone corretamente")
+          setErrorTelefone("Você se esqueceu de colocar o telefone")
+          error = true
+        }
+        if(nome == null){
+          setErrorNome("Você se esqueceu de colocar o nome")
           error = true
         }
         return !error
@@ -43,17 +61,44 @@ export default function Cadastro({navigation}) {
     
     const salvar = () => {
         if(validar()) {//Somente irá salvar o cadastro se validar
-             alert("Salvo com sucesso!")
+          setLoading(true) //carregando a resposta
+          let data = {
+               nome: nome,
+               email: email,
+               senha: senha,
+               telefone: telefone
+             }
+             //Chamando o método cadastrar do usuarioService
+             usuarioService.cadastrar(data)
+             //se o cadastro der certo entra no then
+             .then((response) => {
+                setLoading(false) 
+                const titulo = (response.data.status) ? "Sucesso" : "Erro"
+                setTitulo(titulo)
+                setMensagem(response.data.mensagem)
+                //Alert.alert(titulo, response.data.mensagem) //Chamando mensagem que está na API
+                showDialog()
+              })
+             //se der errado entra no catch
+             .catch((error) => {
+                setLoading(false) 
+                setTitulo("Erro")
+                setMensagem("Houve um erro inesperado")
+               // Alert.alert("Erro", "Houve um ero inesperado")
+             })
         }
     }
 
   return (
     <View style={styles.container}>
-      <Text h3>Cadastre-se</Text> 
+      <Text h4>Cadastre-se</Text> 
       <Input
           placeholder="Nome"
           leftIcon={{ type: 'font-awesome', name: 'user' }}
-          onChangeText={value => setNome(value)}
+          onChangeText={value =>{
+           setNome(value)
+           setErrorNome(null)
+          }}
           errorMessage={errorNome} //mensagem de erro
         />
       <Input
@@ -121,6 +166,12 @@ export default function Cadastro({navigation}) {
             onPress={() => setSelected(!isSelected)} // ! se estiver false vira true, se estiver true vira false (ao clicar)
         />
 
+        { isLoading &&
+          <Text>Carregando...</Text>
+
+        }
+
+        { !isLoading &&
         <Button
           icon={
             <Icon
@@ -133,6 +184,21 @@ export default function Cadastro({navigation}) {
           buttonStyle={specificStyle.button}
           onPress={() => salvar()}
         />
+        }
+        <Provider>
+        <Portal>
+        <Dialog visible={visible} onDismiss={hideDialog}>
+          <Dialog.Title>{titulo}</Dialog.Title>
+          <Dialog.Content>
+            <Paragraph>{mensagem}</Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <PaperButton onPress={hideDialog}>OK</PaperButton>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+      </Provider>
+
     </View>
   );
 }

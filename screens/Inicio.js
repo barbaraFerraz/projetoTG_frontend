@@ -40,7 +40,7 @@ const entrar = () => {
           buttonStyle={specificStyle.button} //aplicando estilo no botão
           onPress={() => cadastrar()}
         />
-        <Text style={styles.other} h>ou</Text>
+        <Text style={styles.other} h4>ou</Text>
         <Button 
           icon={
             <Icon

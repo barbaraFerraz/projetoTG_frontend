@@ -23,7 +23,24 @@ const styles = StyleSheet.create({
     },
     login: {
       color: "#FCE35D"
+    },
+    /*
+    maskedInput: {
+      flexGrow: 1,
+      height: 40,
+      fontSize: 18,
+      borderBottomColor: "#999",
+      borderBottomWidht: 1,
+      borderStyle: "solid",
+      alignSelf: "flex-start"
+    },
+    containerMask: {
+      flexDirection: "row",
+      marginBottom: 20,
+      marginLeft: 10,
+      marginRight: 10,
     }
+    */
   });
   
   export default styles

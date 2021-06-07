@@ -19,7 +19,7 @@ function MyStack() {
       <Stack.Screen name="Açaí Delivery" component={Inicio}
        options={{
         headerStyle: {
-          backgroundColor: '#FCE35D', //header cor amarela
+          backgroundColor: '#9B59B6', //header cor amarela
         },
         headerTintColor: '#FCE35D', // setinha de voltar cor amarela
          headerTitleStyle: {
